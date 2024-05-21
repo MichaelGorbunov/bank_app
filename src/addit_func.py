@@ -55,27 +55,25 @@ def search_max_div(number_list: list[int]) -> int:
         return left_div
 
 
-
-
-def select_product(sel_prod_list:list, category:str):
-    ''' Функция фильтрует список словарей по ключу category'''
+def select_product(sel_prod_list: list, category: str) -> list:
+    """Функция фильтрует список словарей по ключу category"""
     out_sel_list = []
-    for product in sel_prod_list:
-        if product["category"] == category:
-            out_sel_list.append(product)
+    for item_product in sel_prod_list:
+        if item_product["category"] == category:
+            out_sel_list.append(item_product)
     return out_sel_list
 
 
-def sort_dict_list(product_list: list, cat: str = None) -> list:
-    '''функция, которая принимает на вход список словарей, состоящих из данных о продуктах в магазине.
-Каждый словарь содержит следующие поля:
-    name    — название продукта;
-    price    — стоимость;
-    category    — категория продукта;
-    quantity    — количество в наличии.
-Функция должна возвращать список словарей, отсортированных по убыванию стоимости продукта,
-но только для продуктов из заданной категории.
-Если категория не задана, то сортировка производится для всех продуктов.'''
+def sort_dict_list(product_list: list, cat: str | None) -> list:
+    """функция, которая принимает на вход список словарей, состоящих из данных о продуктах в магазине.
+    Каждый словарь содержит следующие поля:
+        name    — название продукта;
+        price    — стоимость;
+        category    — категория продукта;
+        quantity    — количество в наличии.
+    Функция должна возвращать список словарей, отсортированных по убыванию стоимости продукта,
+    но только для продуктов из заданной категории.
+    Если категория не задана, то сортировка производится для всех продуктов."""
     out_prod_list = []
     if len(product_list[0]) == 0:
         return []
@@ -86,6 +84,3 @@ def sort_dict_list(product_list: list, cat: str = None) -> list:
 
     sorted_product = sorted(out_prod_list, key=lambda x: x["price"], reverse=True)
     return sorted_product
-
-
-

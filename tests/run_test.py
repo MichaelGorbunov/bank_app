@@ -55,7 +55,8 @@ products = [
     {"name": "Cake", "category": "sweets", "price": 400, "quantity": 3, "brand": "DEF", "discount": 10},
     {"name": "Orange", "category": "fruit", "price": 150, "quantity": 18},
     {"name": "Lettuce", "category": "veggie", "price": 80, "quantity": 30, "organic": True},
-    {"name": "Chocolate", "category": "sweets", "price": 250, "quantity": 10, "brand": "GHI", "flavor": "Dark"}
+    {"name": "Chocolate", "category": "sweets", "price": 250, "quantity": 10, "brand": "GHI", "flavor": "Dark"},
 ]
 
-print(sort_dict_list(products, "veggie"))
+# print(sort_dict_list(products, "veggie"))
+print(sort_dict_list(products, None))
