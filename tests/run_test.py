@@ -1,6 +1,7 @@
 # from src.addit_func import scan_dirs
 # from src.masks import get_masked_nums
 from src.addit_func import find_adv_string, search_max_div
+from src.processing import filter_dict_list
 from src.widget import date_from_string, mask_bank_data
 
 # my_select_path = r"C:\Windows\Temp"
@@ -27,7 +28,6 @@ test_list2 = [
 for i in test_list2:
     print(mask_bank_data(i))
 
-
 test_list3 = [["hello", "world", "apple", "pear", "banana", "pop"], ["", "madam", "racecar", "noon", "level", ""], []]
 for i3 in test_list3:
     print(find_adv_string(i3))
@@ -43,3 +43,12 @@ for i4 in test_list4:
     print(search_max_div(i4))
 
 print(date_from_string("2018-07-11T02:26:18.671407"))
+
+test_dict_list1 = [
+    {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
+    {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
+    {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
+    {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
+]
+print(filter_dict_list(test_dict_list1))
+print(filter_dict_list(test_dict_list1, "CANCELED"))
