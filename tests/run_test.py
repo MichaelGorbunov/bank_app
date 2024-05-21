@@ -1,9 +1,10 @@
-from src.addit_func import scan_dirs
+# from src.addit_func import scan_dirs
 # from src.masks import get_masked_nums
+from src.addit_func import find_adv_string, search_max_div
 from src.widget import mask_bank_data
 
-my_select_path = r"C:\Windows\Temp"
-print(scan_dirs(my_select_path, True))
+# my_select_path = r"C:\Windows\Temp"
+# print(scan_dirs(my_select_path, True))
 
 # test_list = [7000792289606361, 73654108430135874305]
 # for item in test_list:
@@ -25,3 +26,18 @@ test_list2 = [
 
 for i in test_list2:
     print(mask_bank_data(i))
+
+
+test_list3 = [["hello", "world", "apple", "pear", "banana", "pop"], ["", "madam", "racecar", "noon", "level", ""], []]
+for i3 in test_list3:
+    print(find_adv_string(i3))
+
+test_list4 = [
+    [-3, 8, 10, -10, 20, 0, 25, 25],
+    [-5, -7, -9, -13],
+    [2, 3, 5, 7, 11],
+    [1, 2],
+    [4],
+]
+for i4 in test_list4:
+    print(search_max_div(i4))

@@ -24,3 +24,32 @@ def scan_dirs(path: str, recurse: bool = False) -> dict:
             some_dict["files"] += len(files)
             some_dict["folders"] += len(folder)
     return some_dict
+
+
+def find_adv_string(str_list: list) -> list:
+    """функция принимает на вход список строк и возвращает список строк,
+    в которых первая и последняя буквы совпадают.
+    Если список пустой, возврат пустого списка."""
+    return_list = []
+    if len(str_list) < 1:
+        return_list = str_list
+        return return_list
+    for item in str_list:
+        if item[:1] == item[-1:]:
+            return_list.append(item)
+    return return_list
+
+
+def search_max_div(number_list: list[int]) -> int:
+    """Функция принимает на вход список целых чисел и возвращает максимальное
+    произведение двух чисел из списка.
+    Если в списке менее двух чисел, функция  возвращает 0"""
+    if len(number_list) < 2:
+        return 0
+    sort_num_list = sorted(number_list)
+    left_div = sort_num_list[0] * sort_num_list[1]
+    right_div = sort_num_list[-1] * sort_num_list[-2]
+    if left_div <= right_div:
+        return right_div
+    else:
+        return left_div
