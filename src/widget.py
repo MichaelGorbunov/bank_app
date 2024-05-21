@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.masks import get_masked_nums
 
 
@@ -9,3 +11,9 @@ def mask_bank_data(bank_data: str) -> str:
     data_parts[-1] = get_masked_nums(data_parts[-1])
 
     return " ".join(data_parts)
+
+
+def date_from_string(date_string: str) -> str:
+    """озвращат строку с датой в формате DD.MM.YYYY"""
+
+    return (datetime.strptime(date_string, "%Y-%m-%dT%H:%M:%S.%f")).strftime("%d.%m.%Y")

@@ -1,7 +1,7 @@
 # from src.addit_func import scan_dirs
 # from src.masks import get_masked_nums
 from src.addit_func import find_adv_string, search_max_div
-from src.widget import mask_bank_data
+from src.widget import date_from_string, mask_bank_data
 
 # my_select_path = r"C:\Windows\Temp"
 # print(scan_dirs(my_select_path, True))
@@ -41,3 +41,5 @@ test_list4 = [
 ]
 for i4 in test_list4:
     print(search_max_div(i4))
+
+print(date_from_string("2018-07-11T02:26:18.671407"))
