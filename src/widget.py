@@ -14,6 +14,6 @@ def mask_bank_data(bank_data: str) -> str:
 
 
 def date_from_string(date_string: str) -> str:
-    """озвращат строку с датой в формате DD.MM.YYYY"""
+    """Возвращат строку с датой в формате DD.MM.YYYY"""
 
     return (datetime.strptime(date_string, "%Y-%m-%dT%H:%M:%S.%f")).strftime("%d.%m.%Y")
