@@ -53,3 +53,7 @@ def search_max_div(number_list: list[int]) -> int:
         return right_div
     else:
         return left_div
+
+
+def some_func():
+    pass
