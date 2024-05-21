@@ -1,6 +1,6 @@
 # from src.addit_func import scan_dirs
 # from src.masks import get_masked_nums
-from src.addit_func import find_adv_string, search_max_div
+from src.addit_func import find_adv_string, search_max_div, sort_dict_list
 from src.widget import date_from_string, mask_bank_data
 
 # my_select_path = r"C:\Windows\Temp"
@@ -27,7 +27,6 @@ test_list2 = [
 for i in test_list2:
     print(mask_bank_data(i))
 
-
 test_list3 = [["hello", "world", "apple", "pear", "banana", "pop"], ["", "madam", "racecar", "noon", "level", ""], []]
 for i3 in test_list3:
     print(find_adv_string(i3))
@@ -43,3 +42,20 @@ for i4 in test_list4:
     print(search_max_div(i4))
 
 print(date_from_string("2018-07-11T02:26:18.671407"))
+
+products = [
+    {"name": "Apple", "category": "fruit", "price": 120, "quantity": 10},
+    {"name": "Banana", "category": "fruit", "price": 90, "quantity": 15},
+    {"name": "Avocado", "category": "fruit", "price": 200, "quantity": 5},
+    {"name": "Tomato", "category": "veggie", "price": 100, "quantity": 20},
+    {"name": "Broccoli", "category": "veggie", "price": 300, "quantity": 8},
+    {"name": "Carrot", "category": "veggie", "price": 100, "quantity": 25},
+    {"name": "Cookie", "category": "sweets", "price": 200, "quantity": 12, "brand": "ABC"},
+    {"name": "Donut", "category": "sweets", "price": 300, "quantity": 7, "brand": "XYZ"},
+    {"name": "Cake", "category": "sweets", "price": 400, "quantity": 3, "brand": "DEF", "discount": 10},
+    {"name": "Orange", "category": "fruit", "price": 150, "quantity": 18},
+    {"name": "Lettuce", "category": "veggie", "price": 80, "quantity": 30, "organic": True},
+    {"name": "Chocolate", "category": "sweets", "price": 250, "quantity": 10, "brand": "GHI", "flavor": "Dark"}
+]
+
+print(sort_dict_list(products, "veggie"))
