@@ -1,4 +1,5 @@
-from datetime import datetime
+# from datetime import datetime
+from src.addit_func import stat_avg_count
 
 # Функция должна возвращать словарь, содержащий информацию о средней стоимости заказа и
 # количестве заказов за каждый месяц. Ключами словаря должны быть год и месяц в формате
@@ -76,52 +77,52 @@ list1 = [
     {"id": 22, "date": "01.03.2024", "items": [{"name": "tovar7", "price": 10.3, "quantity": 1}]},
     {"id": 23, "date": "01.04.2024", "items": [{"name": "tovar11", "price": 10.2, "quantity": 2}]},
 ]
-temp_list = []
-for item in list1:
-    temp_dic = {}
-    # print("*")
-    # print(item)
-    date2 = (datetime.strptime(item["date"], "%d.%m.%Y")).strftime("%Y-%m")
-    sum = 0
-    for item2 in item.get("items"):
-        sum = sum + item2["price"] * item2["quantity"]
-        # print(item2["price"]*item2["quantity"])
-    # print(sum)
-    temp_dic["date"] = date2
-    temp_dic["sum"] = sum
-    temp_list.append(temp_dic)
-
-temp_list1 = sorted(temp_list, key=lambda x: x["date"])
-print(temp_list1)
-
-
-def summ_price(products: list, category: list) -> dict:
-    avg2 = {}
-    summ = 0
-    count = 0
-    for product in products:
-        if product["date"] == category:
-            summ += product["sum"]
-            count += 1
-    avg = round(summ / count, 2)
-    avg2["average_order_value"] = avg
-    avg2["order_count"] = count
-
-    return avg2
+# temp_list = []
+# for item in list1:
+#     temp_dic = {}
+#     # print("*")
+#     # print(item)
+#     date2 = (datetime.strptime(item["date"], "%d.%m.%Y")).strftime("%Y-%m")
+#     sum = 0
+#     for item2 in item.get("items"):
+#         sum = sum + item2["price"] * item2["quantity"]
+#         # print(item2["price"]*item2["quantity"])
+#     # print(sum)
+#     temp_dic["date"] = date2
+#     temp_dic["sum"] = sum
+#     temp_list.append(temp_dic)
+#
+# temp_list1 = sorted(temp_list, key=lambda x: x["date"])
+# print(temp_list1)
 
 
-def average_price_per_category(products: list) -> dict:
-    avg1 = {}
-    data_set1 = []
-    for item in temp_list1:
-        if not item["date"] in data_set1:
-            data_set1.append(item["date"])
-    for dates in data_set1:
-        avg1[dates] = summ_price(products, dates)
-    return avg1
+# def summ_price(products: list, category: list) -> dict:
+#     avg2 = {}
+#     summ = 0
+#     count = 0
+#     for product in products:
+#         if product["date"] == category:
+#             summ += product["sum"]
+#             count += 1
+#     avg = round(summ / count, 2)
+#     avg2["average_order_value"] = avg
+#     avg2["order_count"] = count
+#
+#     return avg2
 
 
-print(average_price_per_category(temp_list1))
+# def average_price_per_category(products: list) -> dict:
+#     avg1 = {}
+#     data_set1 = []
+#     for item in temp_list1:
+#         if not item["date"] in data_set1:
+#             data_set1.append(item["date"])
+#     for dates in data_set1:
+#         avg1[dates] = summ_price(products, dates)
+#     return avg1
+#
+#
+# print(average_price_per_category(temp_list1))
 
 
 # {
@@ -132,6 +133,58 @@ print(average_price_per_category(temp_list1))
 # 'месяц5': {'average_order_value': x5, 'order_count': y5}
 # ....
 # }
-def stat_avg_count(stat_list: list) -> dict:
 
-    pass
+
+# def sorting_list(raw_list:list) -> list:
+#     '''функция принимает список,подсчитывае сумму в заказе,
+#     сортирует список по дате и возвращает в виде списка
+#     значий [{'date': '2024-01', 'sum': 41.5},...]'''
+#     temp_list = []
+#     for item in raw_list:
+#         temp_dic = {}
+#         date2 = (datetime.strptime(item["date"], "%d.%m.%Y")).strftime("%Y-%m")
+#         sum = 0
+#         for item2 in item.get("items"):
+#             sum = sum + item2["price"] * item2["quantity"]
+#         temp_dic["date"] = date2
+#         temp_dic["sum"] = sum
+#         temp_list.append(temp_dic)
+#     return sorted(temp_list, key=lambda x: x["date"])
+#
+# def summ_price(products: list, category) -> dict:
+#     '''функция суммирует значения в указанной категории,возвращает среднее значение,
+#     и количество вхождений.'''
+#     avg2 = {}
+#     summ = 0
+#     count = 0
+#     for product in products:
+#         if product["date"] == category:
+#             summ += product["sum"]
+#             count += 1
+#     avg = round(summ / count, 2)
+#     avg2["average_order_value"] = avg
+#     avg2["order_count"] = count
+#
+#     return avg2
+#
+#
+# def stat_avg_count(stat_list: list) -> dict:
+#     '''функция принимает список словарей,возвращает список словарь
+#      вида {'2024-01': {'average_order_value': 222.32, 'order_count': 4},
+#      где указаны средняя сумма заказов,их количество. Ключом выступает месяц'''
+#     temp_list1=sorting_list(stat_list)
+#     avg1 = {}
+#     data_set1 = []
+#     for item in temp_list1:
+#         if not item["date"] in data_set1:
+#             data_set1.append(item["date"])
+#     for dates in data_set1:
+#         avg1[dates] = summ_price(temp_list1, dates)
+#     return avg1
+
+
+# tmpList2=[]
+# tmpList2=sorting_list(list1)
+# print(tmpList2)
+tmplist3 = stat_avg_count(list1)
+print(tmplist3)
