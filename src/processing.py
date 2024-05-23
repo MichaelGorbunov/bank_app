@@ -19,3 +19,4 @@ def sorted_operation(in_sort_list: list[dict], reverse_direction: bool = True) -
     порядок сортировки (убывание, возрастание)."""
     sorted_list = sorted(in_sort_list, key=lambda item: item["date"], reverse=reverse_direction)
     return sorted_list
+
