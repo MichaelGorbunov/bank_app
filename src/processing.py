@@ -12,7 +12,7 @@ def filter_operations(in_dict_list: list[dict], in_state: str = "EXECUTED") -> l
     return sort_list
 
 
-def sorted_operation(in_sort_list: list[dict], reverse_direction: bool = True) -> list[dict] | None:
+def sorted_operation(in_sort_list: list[dict], reverse_direction: bool = True) -> list[dict] :
     """Функцию принимает на вход список словарей и возвращает новый список,
     в котором исходные словари отсортированы по убыванию даты (ключ date).
     Функция принимает два аргумента, второй необязательный задает
