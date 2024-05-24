@@ -1,8 +1,4 @@
-# from src.addit_func import scan_dirs
-# from src.masks import get_masked_nums
-from src.addit_func import find_adv_string, search_max_div
 from src.processing import filter_operations, sorted_operation
-from src.addit_func import find_adv_string, search_max_div, sort_dict_list
 from src.widget import date_from_string, mask_bank_data
 
 # my_select_path = r"C:\Windows\Temp"
@@ -29,20 +25,6 @@ test_list2 = [
 for i in test_list2:
     print(mask_bank_data(i))
 
-
-test_list3 = [["hello", "world", "apple", "pear", "banana", "pop"], ["", "madam", "racecar", "noon", "level", ""], []]
-for i3 in test_list3:
-    print(find_adv_string(i3))
-
-test_list4 = [
-    [-3, 8, 10, -10, 20, 0, 25, 25],
-    [-5, -7, -9, -13],
-    [2, 3, 5, 7, 11],
-    [1, 2],
-    [4],
-]
-for i4 in test_list4:
-    print(search_max_div(i4))
 
 print(date_from_string("2018-07-11T02:26:18.671407"))
 
@@ -77,7 +59,3 @@ products = [
     {"name": "Lettuce", "category": "veggie", "price": 80, "quantity": 30, "organic": True},
     {"name": "Chocolate", "category": "sweets", "price": 250, "quantity": 10, "brand": "GHI", "flavor": "Dark"},
 ]
-
-# print(sort_dict_list(products, "veggie"))
-print(sort_dict_list(products, None))
-
