@@ -4,7 +4,7 @@ def mask_card_numbers(nums: str) -> str:
 
 
 def mask_account_numbers(nums: str) -> str:
-    """Функция мвскирует номер счета"""
+    """Функция маскирует номер счета"""
     return f"**{nums[-4:]}"
 
 
