@@ -1,7 +1,7 @@
 from typing import Generator
 
 
-def card_number_generator(start: int, stop: int) -> list[str] | None :
+def card_number_generator(start: int, stop: int) -> list[str] | None:
     """генератор номеров банковских карт в формате
     XXXX XXXX XXXX XXXX в диапазоне от start до stop"""
 
