@@ -5,8 +5,9 @@ def card_number_generator(start: int, stop: int) -> list[str] | None:
     """генератор номеров банковских карт в формате
     XXXX XXXX XXXX XXXX в диапазоне от start до stop"""
 
-    if stop < start or stop > 10000000000000000:
+    if stop < start or stop > 9999999999999999:
         return None
+
     card_number_list: list[str] = []
     for i in range(start, stop + 1):
         nm = list(str(i).zfill(16))

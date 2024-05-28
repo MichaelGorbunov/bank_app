@@ -1,3 +1,4 @@
+import pytest
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 
 transactions = [
@@ -47,18 +48,36 @@ transactions = [
         "to": "Счет 14211924144426031657",
     },
 ]
-print(type(filter_by_currency(transactions)))
-usd_transactions = filter_by_currency(transactions)
-rub_transactions = filter_by_currency(transactions, "руб.")
-for _ in range(3):
-    print(next(usd_transactions)["id"])
-print("*")
-for _ in range(2):
-    print(next(rub_transactions)["id"])
 
-descriptions = transaction_descriptions(transactions)
-for _ in range(5):
-    print(next(descriptions))
+def test_transaction_descriptions()->None:
+    generator = transaction_descriptions(transactions)
+    assert next(generator) == "Перевод организации"
+    assert next(generator) == "Перевод со счета на счет"
+    assert next(generator) == "Перевод со счета на счет"
 
-for card_number in card_number_generator(9999999999999998, 9999999999999999):
-    print(card_number)
+@pytest.mark.parametrize("start,stop, expected_result", [
+    (2, 1, None),
+    (9999999999999999,10000000000000000, None),
+   ])
+def test_card_number_generator_wrong(start,stop,expected_result):
+    assert card_number_generator(start,stop) == expected_result
+
+@pytest.mark.parametrize("start,stop, expected_result", [
+    (1, 2, ["0000 0000 0000 0001","0000 0000 0000 0002"]),
+(9999999999999998, 9999999999999999, ["9999 9999 9999 9998","9999 9999 9999 9999"])
+
+   ])
+def test_card_number_generator_good(start,stop,expected_result):
+    assert card_number_generator(start,stop) == expected_result
+
+
+# def test_filter_by_currency_usd()->None:
+#     generator = transaction_descriptions(transactions,"USD")
+#     assert next(generator) == "939719570"
+#     assert next(generator) == "142264268"
+#     assert next(generator) == "895315941"
+
+# def test_filter_by_currency_usd()->None:
+#     generator = transaction_descriptions(transactions,"руб.)
+#     assert next(generator) == "873106923"
+#     assert next(generator) == "594226727"
