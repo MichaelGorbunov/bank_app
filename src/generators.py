@@ -18,13 +18,15 @@ def card_number_generator(start: int, stop: int) -> list[str] | None:
     return card_number_list
 
 
-def filter_by_currency(transactions: list[dict], currency: str = "USD") -> filter:
+def filter_by_currency(transactions: list[dict], currency: str = "USD") -> Generator:
     """функция принимает список словарей с банковскими
     операциями (или объект-генератор, который выдает по одной банковской операции)
     и возвращает итератор, который выдает по очереди операции,
     в которых указана заданная валюта"""
     filtered_transact = filter(lambda x: x["operationAmount"]["currency"]["name"] == currency, transactions)
-    return filtered_transact
+    # return filtered_transact
+    for item in filtered_transact:
+        yield item
 
 
 def transaction_descriptions(transactions: list[dict]) -> Generator:
