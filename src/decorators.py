@@ -70,3 +70,7 @@ print(my_function1(10, 0))
 
 
 # mprint(f"qweq{1+1}eqweq",False)#
+
+# import os создать файл если его не существует
+# if not os.path.exists('file'):
+#     open('file', 'w').close()
