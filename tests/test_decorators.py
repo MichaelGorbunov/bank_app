@@ -29,16 +29,16 @@ def test_log_file():
     assert "my_function ok" in log_content
 
 
-# @log()
-# def my_function1(x, y):
-#     return x + y
-#
-#
-# def test_log_console(capsys):
-#     my_function1(1, 1)
-#     captured = capsys.readouterr()
-#     assert captured == "my_function1 ok"
+@log()
+def my_function3(x, y):
+    return x + y
 
+
+def test_log_console(capsys):
+    my_function3(1, 1)
+    captured = capsys.readouterr()
+    assert captured.out == "my_function3 ok\n"
+my_function3(1, 1)
 
 @log("myfile.txt")
 def my_function1(x, y):
@@ -49,10 +49,23 @@ def test_log_file_err():
     my_function1(1, 0)
     with open("myfile.txt", "r") as file:
         log_content = file.read()
-    assert "my_function error: division by zero. Inputs: (1, 0), {}" in log_content
+    assert "my_function1 error: division by zero. Inputs: (1, 0), {}" in log_content
 
 
-# def test_log_console_err(capsys):
-#     my_function(1, 0)
-#     out = capsys.readouterr()
-#     assert out == "my_function error: division by zero. Inputs: (1, 0), {}"
+@log()
+def my_function2(x, y):
+    return x / y
+
+
+def test_log_console_err2(capsys):
+    my_function2(1, 0)
+    captured = capsys. readouterr()
+    assert captured. out == "my_function2 error: division by zero. Inputs: (1, 0), {}\n"
+my_function2(1, 0)
+
+
+
+def test_output(capsys):
+    print("hello")
+    captured = capsys. readouterr()
+    assert captured. out == "hello\n"
