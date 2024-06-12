@@ -10,7 +10,7 @@ import json
 from src.external_api import currency_conversion
 
 # import os.path
-# from typing import Any, Dict, List
+# from typing import Dict, List
 
 
 def get_transaction_from_file(path: str) -> list:
