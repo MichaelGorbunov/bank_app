@@ -1,1 +1,0 @@
-my_function1 error: division by zero. Inputs: (1, 0), {}
