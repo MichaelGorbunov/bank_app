@@ -74,12 +74,13 @@
 #     captured = capsys.readouterr()
 #     assert captured.out == "hello\n"
 import os
-from unittest.mock import call, patch
 
 import pytest
 
 # from src.decorators import log, retry, unstable_function
 from src.decorators import log
+
+# from unittest.mock import call, patch
 
 
 def test_log_to_file():
