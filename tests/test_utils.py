@@ -9,6 +9,7 @@ from src.utils import get_transaction_amount, get_transaction_from_file
 
 
 def test_get_transaction_amount():
+    """вывод суммы транзакции"""
     test_dict = {
         "id": 441945886,
         "state": "EXECUTED",
@@ -22,6 +23,7 @@ def test_get_transaction_amount():
 
 
 def test_get_transaction_amount_no_amount():
+    """в транзакции нет суммы"""
     test_dict = {
         "id": 441945886,
         "state": "EXECUTED",
@@ -34,10 +36,12 @@ def test_get_transaction_amount_no_amount():
 
 
 def test_get_transaction_amount_no_transact():
+    """пустая транзакция"""
     assert get_transaction_amount("") == 0.0
 
 
 def test_get_transaction_amount_usd():
+    """проверка конвертации"""
     test_dict = {
         "id": 441945886,
         "state": "EXECUTED",
@@ -53,13 +57,14 @@ def test_get_transaction_amount_usd():
 @patch("builtins.open")
 @patch("os.path.exists")
 def test_get_transaction_from_file(mock_exists, mock_open):
+    """чтение виртуального файла"""
     # Mock os.path.exists to return True
     mock_exists.return_value = True
 
     # Mock open function to return a JSON string
     mock_open.return_value.__enter__.return_value.read.return_value = '[{"id": 207126257, "state": "EXECUTED"}]'
 
-    file_path = r"E:\SkyPro\PyCharmProjects\bank_app\data\operations.json"
+    file_path = "..\\data\\operations.json"
     transactions = get_transaction_from_file(file_path)
 
     assert transactions == [{"id": 207126257, "state": "EXECUTED"}]
@@ -105,6 +110,7 @@ def test_get_transaction_from_file_no_json():
 @patch('builtins.open')
 @patch('os.path.exists')
 def test_get_transaction_from_file_not_a_list(mock_exists, mock_open):
+    """ файл не json"""
     mock_exists.return_value = True
     mock_open.return_value.__enter__.return_value.read.return_value = '{}'
 
@@ -115,3 +121,5 @@ def test_get_transaction_from_file_not_a_list(mock_exists, mock_open):
     assert transactions == {}
     # mock_exists.assert_called_once_with(file_path)
     mock_open.assert_called_once_with(file_path, 'r', encoding='utf-8')
+
+
