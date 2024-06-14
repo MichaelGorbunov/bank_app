@@ -18,3 +18,7 @@ from src.masks import get_masked_nums
 )
 def test_get_masked_nums_correct_data(number: str, expected: str) -> None:
     assert get_masked_nums(number) == expected
+
+
+def test_get_masked_nums_incorrect_data() -> None:
+    assert get_masked_nums("111111111111111111111") == "Введите 16 или 20-значное число"
