@@ -107,12 +107,12 @@ def test_get_transaction_from_file_no_json():
 #
 #     # # Проверяем, что сообщение об ошибке соответствует ожидаемому
 #    assert err == "***"
-@patch('builtins.open')
-@patch('os.path.exists')
+@patch("builtins.open")
+@patch("os.path.exists")
 def test_get_transaction_from_file_not_a_list(mock_exists, mock_open):
-    """ файл не json"""
+    """файл не json"""
     mock_exists.return_value = True
-    mock_open.return_value.__enter__.return_value.read.return_value = '{}'
+    mock_open.return_value.__enter__.return_value.read.return_value = "{}"
 
     # file_path = 'data/operations.json'
     file_path = "..\\data\\myfile.txt"
@@ -120,6 +120,4 @@ def test_get_transaction_from_file_not_a_list(mock_exists, mock_open):
 
     assert transactions == {}
     # mock_exists.assert_called_once_with(file_path)
-    mock_open.assert_called_once_with(file_path, 'r', encoding='utf-8')
-
-
+    mock_open.assert_called_once_with(file_path, "r", encoding="utf-8")
