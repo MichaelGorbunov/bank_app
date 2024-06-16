@@ -61,14 +61,16 @@ def get_transaction_amount(transaction: dict) -> float:
     # print(transaction)
 
     if "operationAmount" in transaction:
-        currency = transaction["operationAmount"]["currency"]["code"]
+        # currency = transaction["operationAmount"]["currency"]["code"]
+        # get('key1', {}).get('key2')
+        currency = transaction.get("operationAmount", {}).get("currency", {}).get("code")
         if currency == "RUB":
             logger.info(f"Вывод суммы транзакции, если код валюты {currency}")
-            return float(transaction["operationAmount"]["amount"])
+            return float(transaction.get("operationAmount", {}).get("amount"))
         elif currency != "RUB":
             logger.info(f"Вывод суммы транзакции, если код валюты {currency}")
             # date_transact = transaction["date"][:10]
             # return currency_conversion(currency, transaction["operationAmount"]["amount"], date_transact)
-            return currency_conversion(currency, transaction["operationAmount"]["amount"])
+            return currency_conversion(currency, transaction.get("operationAmount", {}).get("amount"))
     logger.error("Нет ключа 'operationAmount' в транзакции")
     return 0.0
