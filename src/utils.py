@@ -8,7 +8,7 @@
 import json
 import logging
 import os
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 from config import LOGS_DIR
 from src.external_api import currency_conversion
@@ -25,7 +25,7 @@ logger.setLevel(logging.INFO)
 # import os.path
 
 
-def get_transaction_from_file(path: str) -> list[Dict]:
+def get_transaction_from_file(path: str) -> list[Dict] | Any:
     """функция принимает путь до json файла и возвращает список словарей"""
     blank_list: list = []
     try:
@@ -53,7 +53,7 @@ def get_transaction_from_file(path: str) -> list[Dict]:
 # Функцию конвертации поместите в модульexternal_api
 
 
-def get_transaction_amount(transaction: dict) -> float:
+def get_transaction_amount(transaction: Dict) -> float:
     """функция возвращает сумму транзакции и при необходимости конвертирует в рубли"""
     if not transaction:
         logger.error("Транзакция не найдена")
@@ -63,14 +63,15 @@ def get_transaction_amount(transaction: dict) -> float:
     if "operationAmount" in transaction:
         # currency = transaction["operationAmount"]["currency"]["code"]
         # get('key1', {}).get('key2')
-        currency = transaction.get("operationAmount", {}).get("currency", {}).get("code")
+        currency = transaction["operationAmount"].get("currency").get("code")
         if currency == "RUB":
             logger.info(f"Вывод суммы транзакции, если код валюты {currency}")
-            return float(transaction.get("operationAmount", {}).get("amount"))
+            return float(transaction["operationAmount"].get("amount"))
         elif currency != "RUB":
             logger.info(f"Вывод суммы транзакции, если код валюты {currency}")
             # date_transact = transaction["date"][:10]
             # return currency_conversion(currency, transaction["operationAmount"]["amount"], date_transact)
-            return currency_conversion(currency, transaction.get("operationAmount", {}).get("amount"))
+            return currency_conversion(currency, transaction["operationAmount"].get("amount"))
     logger.error("Нет ключа 'operationAmount' в транзакции")
     return 0.0
+

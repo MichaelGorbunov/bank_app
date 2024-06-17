@@ -1,7 +1,8 @@
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 from src.my_module import fetch_data
-from src.utils import get_transaction_amount
+
+# from src.utils import get_transaction_amount
 
 
 # Тестовая функция
@@ -36,7 +37,7 @@ def test_fetch_data_200():
     result = fetch_data(mock_api_client, "http://fakeurl.com")
 
     # Проверяем, что результат верный
-    assert result == None
+    assert result is None
 
     # Проверяем, что метод get был вызван с правильным URL
     mock_api_client.get.assert_called_with("http://fakeurl.com")

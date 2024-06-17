@@ -10,7 +10,7 @@ test_dict = {
     "to": "Счет 41421565395219882431",
 }
 print(get_transaction_amount(test_dict))
-print(get_transaction_amount(""))
+print(get_transaction_amount({}))
 
 print(get_masked_nums("41421565395219882431"))
 print(get_masked_nums("6831982476737658"))

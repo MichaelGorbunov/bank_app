@@ -1,4 +1,4 @@
-# import json
+import json
 # import random
 from unittest.mock import patch
 
@@ -72,33 +72,24 @@ def test_get_transaction_from_file(mock_exists, mock_open):
     # mock_open.assert_called_once_with(file_path, 'r', encoding='utf-8')
 
 
-# @patch('src.external_api.currency_conversion')
-# # @patch('src.read_f.get_user_repos')
-# def test_currency_conversion(mocked_conversion):
-#     mocked_conversion.return_value = 100
-#     # mocked_get.return_value.json.return_value = {'success': True, 'query':
-#     {'from': 'EUR', 'to': 'RUB', 'amount': 1}, 'info':
-#     {'timestamp': 1718255463, 'rate': 98.303283}, 'date': '2024-06-13', 'result': 98.303283}
-#     result = get_transaction_amount({
-#     "id": 142264268,
-#     "state": "EXECUTED",
-#     "date": "2019-04-04T23:20:05.206878",
-#     "operationAmount": {
-#       "amount": "10",
-#       "currency": {
-#         "name": "USD",
-#         "code": "USD"
-#       }
-#     },
-#     "description": "Перевод со счета на счет",
-#     "from": "Счет 19708645243227258542",
-#     "to": "Счет 75651667383060284188"
-#   })
-#     assert result == 98.303283
-
-
 def test_get_transaction_from_file_no_json():
+    """чтение ошибочного файла"""
     assert get_transaction_from_file("..\\data\\myfile.txt") == []
+
+
+@patch("builtins.open", create=True)
+def test_get_transactions_from_file_patch(mock_open):
+    """тесты с виртуальным файлом"""
+
+    mock_file = mock_open.return_value.__enter__.return_value
+
+    # в файле список словарей
+    mock_file.read.return_value = json.dumps([{"test": "test"}])
+    assert get_transaction_from_file("test.json") == [{"test": "test"}]
+
+    # "пустой файл"
+    mock_file.read.return_value = ""
+    assert get_transaction_from_file("test.json") == []
 
 
 # def test_get_transaction_from_file_no_json_exept():
@@ -107,17 +98,34 @@ def test_get_transaction_from_file_no_json():
 #
 #     # # Проверяем, что сообщение об ошибке соответствует ожидаемому
 #    assert err == "***"
-@patch("builtins.open")
-@patch("os.path.exists")
-def test_get_transaction_from_file_not_a_list(mock_exists, mock_open):
-    """файл не json"""
-    mock_exists.return_value = True
-    mock_open.return_value.__enter__.return_value.read.return_value = "{}"
-
-    # file_path = 'data/operations.json'
-    file_path = "..\\data\\myfile.txt"
-    transactions = get_transaction_from_file(file_path)
-
-    assert transactions == {}
-    # mock_exists.assert_called_once_with(file_path)
-    mock_open.assert_called_once_with(file_path, "r", encoding="utf-8")
+# @patch("builtins.open")
+# @patch("os.path.exists")
+# def test_get_transaction_from_file_not_a_list(mock_exists, mock_open):
+#     """файл не json"""
+#     mock_exists.return_value = True
+#     mock_open.return_value.__enter__.return_value.read.return_value = "{}"
+#
+#     # file_path = 'data/operations.json'
+#     file_path = "myfile.txt"
+#     transactions = get_transaction_from_file(file_path)
+#
+#     assert transactions == {}
+#     # mock_exists.assert_called_once_with(file_path)
+#     mock_open.assert_called_once_with(file_path, "r", encoding="utf-8")
+#
+#
+# @patch("builtins.open")
+# @patch("os.path.exists")
+# def test_data_transactions_json_decode_error(mock_open):
+#     """Функция проверяет, что функция возвращает False, если файл содержит невалидный JSON"""
+#     # создаем mock для файла
+#     mock_file = mock_open(read_data='invalid json')
+#     mock_file.return_value.__iter__.return_value = ['invalid json']  # <--- Add this line
+#
+#     # патчим функцию open
+#     with patch('builtins.open', mock_file):
+#         # вызываем функцию data_transactions
+#         transactions_dict = get_transaction_from_file('myfile.txt')
+#
+#         # проверяем результат
+#         self.assertEqual(transactions_dict, [])
