@@ -2,6 +2,7 @@
 # и возвращает список словарей с данными о финансовых транзакциях.
 # Если файл пустой, содержит не список или не найден, функция возвращает пустой список.
 
+import csv
 # current_dir = os.path.dirname(os.path.abspath(__file__))
 # json_file_path = os.path.join(current_dir, "../data", "operations.json")
 # list_transactions = data_transactions(json_file_path)
@@ -10,7 +11,7 @@ import logging
 import os
 from typing import Any, Dict
 
-from config import LOGS_DIR
+from config import DATA_DIR, LOGS_DIR
 from src.external_api import currency_conversion
 
 logger = logging.getLogger("utils")
@@ -39,7 +40,7 @@ def get_transaction_from_file(path: str) -> list[Dict] | Any:
                 logger.error("Ошибка обработки файла")
                 return blank_list
     except FileNotFoundError:
-        # print("Файл не найден")
+        raise FileNotFoundError(f"File {path} not found")
         return blank_list
     return transaction_data
 
@@ -75,3 +76,40 @@ def get_transaction_amount(transaction: Dict) -> float:
     logger.error("Нет ключа 'operationAmount' в транзакции")
     return 0.0
 
+
+def get_transaction_from_csv_file(path: str) -> list[Dict] | Any:
+    """функция принимает путь до csv файла и возвращает список словарей"""
+    blank_list: list = []
+    try:
+        with open(path, "r", encoding="UTF-8") as file:
+            reader = csv.reader(file, delimiter=";")
+            header = next(reader)
+            result = []
+            for row in reader:
+                # print(row)
+                row_dict = {
+                    "id": row[header.index("id")],
+                    "state": row[header.index("state")],
+                    "date": row[header.index("date")],
+                    "operationAmount": {
+                        "amount": row[header.index("amount")],
+                        "currency": {
+                            "name": row[header.index("currency_name")],
+                            "code": row[header.index("currency_code")],
+                        },
+                    },
+                    "description": row[header.index("description")],
+                    "from": row[header.index("from")],
+                    "to": row[header.index("to")],
+                }
+                result.append(row_dict)
+            file.close()
+
+            return result
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File {path} not found")
+        return blank_list
+
+
+if __name__ == "__main__":
+    print(get_transaction_from_csv_file(os.path.join(DATA_DIR, "test.csv")))

@@ -11,6 +11,7 @@ requests = "^2.32.3"
 python-dotenv = "^1.0.1"
 types-requests = "^2.32.0.20240602"
 mock = "^5.1.0"
+pandas = "^2.2.2"
 
 
 [tool.poetry.group.lint.dependencies]
