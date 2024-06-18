@@ -3,13 +3,13 @@ import os
 # import random
 # from unittest.mock import mock_open, patch
 from unittest.mock import patch
-import mock
+
+# import mock
 import pytest
 
-import src.utils
+# import src.utils
 from config import DATA_DIR
 from src.utils import get_transaction_amount, get_transaction_from_csv_file, get_transaction_from_file
-
 
 # import pytest
 # import requests
@@ -27,7 +27,7 @@ def test_get_transaction_amount():
         "to": "Счет 64686473678894779589",
     }
     assert get_transaction_amount(test_dict) == 31957.59
-    
+
 
 # def test_get_transaction_amount_usd():
 #     """проверка конвертации"""
@@ -43,46 +43,36 @@ def test_get_transaction_amount():
 #     assert get_transaction_amount(test_dict) != 1
 
 
-@patch('src.utils.currency_conversion')
+@patch("src.utils.currency_conversion")
 def test_currency_conversion_usd(mocked_conversion):
     mocked_conversion.return_value = 100
 
-    result = get_transaction_amount({
-        "id": 142264268,
-        "state": "EXECUTED",
-        "date": "2019-04-04T23:20:05.206878",
-        "operationAmount": {
-            "amount": "10",
-            "currency": {
-                "name": "USD",
-                "code": "USD"
-            }
-        },
-        "description": "Перевод со счета на счет",
-        "from": "Счет 19708645243227258542",
-        "to": "Счет 75651667383060284188"
-    })
+    result = get_transaction_amount(
+        {
+            "id": 142264268,
+            "state": "EXECUTED",
+            "date": "2019-04-04T23:20:05.206878",
+            "operationAmount": {"amount": "10", "currency": {"name": "USD", "code": "USD"}},
+            "description": "Перевод со счета на счет",
+            "from": "Счет 19708645243227258542",
+            "to": "Счет 75651667383060284188",
+        }
+    )
     assert result == 100
 
 
 def test_currency_conversion_usd_2():
     """тест с контестным менеджером, проверкой одного вызова с определенными параметрами"""
-    with patch('src.utils.currency_conversion') as call_curr_conv:
+    with patch("src.utils.currency_conversion") as call_curr_conv:
         call_curr_conv.return_value = 100
         test_dict = {
-        "id": 142264268,
-        "state": "EXECUTED",
-        "date": "2019-04-04T23:20:05.206878",
-        "operationAmount": {
-            "amount": "10",
-            "currency": {
-                "name": "USD",
-                "code": "USD"
-            }
-        },
-        "description": "Перевод со счета на счет",
-        "from": "Счет 19708645243227258542",
-        "to": "Счет 75651667383060284188"
+            "id": 142264268,
+            "state": "EXECUTED",
+            "date": "2019-04-04T23:20:05.206878",
+            "operationAmount": {"amount": "10", "currency": {"name": "USD", "code": "USD"}},
+            "description": "Перевод со счета на счет",
+            "from": "Счет 19708645243227258542",
+            "to": "Счет 75651667383060284188",
         }
         assert get_transaction_amount(test_dict) == 100
         # call_curr_conv.assert_called_once_with('https://api.github.com/users/testuser')
@@ -160,14 +150,8 @@ def test_get_transaction_from_file_no_file():
     assert str(excinfo.type.__name__) == "FileNotFoundError"
 
 
-DATA = """id;state;date;amount;currency_name;currency_code;from;to;description
-650703;EXECUTED;2023-09-05T11:30:32Z;16210;Sol;PEN;Счет 58803664561298323391;Счет 39745660563456619397;Перевод организации
-3598919;EXECUTED;2020-12-06T23:00:58Z;29740;Peso;COP;Discover 3172601889670065;Discover 0720428384694643;Перевод с карты на карту
-593027;CANCELED;2023-07-22T05:02:01Z;30368;Shilling;TZS;Visa 1959232722494097;Visa 6804119550473710;Перевод с карты на карту
-"""
-
-
 def test_get_transaction_from_csv_file():
+    """тест получения транзакций из тестового файла"""
     trans = get_transaction_from_csv_file(os.path.join(DATA_DIR, "test.csv"))
     assert trans == [
         {
@@ -209,26 +193,37 @@ def test_get_transaction_from_csv_file():
     ]
 
 
-@patch('csv.reader')
+@patch("csv.reader")
 def test_get_transaction_from_csv_file_mock(mock_reader):
+    """тест извлечения транзакций из виртуального файла"""
     # Настраиваем mock_reader чтобы он возвращал нужный результат
-    mock_reader.return_value = iter([
-        ['id', 'state', 'date', 'amount', 'currency_name', 'currency_code', 'from', 'to', 'description'],
-        ['650703', 'EXECUTED', '2023-09-05T11:30:32Z', '16210', 'SoL', 'PEN', 'Счет 58803664651298323391',
-         'Счет 39746506635466619397', 'Перевод организации']
-    ])
+    mock_reader.return_value = iter(
+        [
+            ["id", "state", "date", "amount", "currency_name", "currency_code", "from", "to", "description"],
+            [
+                "650703",
+                "EXECUTED",
+                "2023-09-05T11:30:32Z",
+                "16210",
+                "SoL",
+                "PEN",
+                "Счет 58803664651298323391",
+                "Счет 39746506635466619397",
+                "Перевод организации",
+            ],
+        ]
+    )
 
-    result = get_transaction_from_csv_file(os.path.join(DATA_DIR, 'transactions.csv'))
+    result = get_transaction_from_csv_file(os.path.join(DATA_DIR, "transactions.csv"))
     expected_result = [
         {
             "id": "650703",
             "state": "EXECUTED",
             "date": "2023-09-05T11:30:32Z",
-            "amount": "16210",
-            "currency_name": "SoL",
-            "currency_code": "PEN",
+            "operationAmount": {"amount": "16210", "currency": {"name": "SoL", "code": "PEN"}},
+            "description": "Перевод организации",
             "from": "Счет 58803664651298323391",
             "to": "Счет 39746506635466619397",
-            "description": "Перевод организации"
         }
     ]
+    assert result == expected_result
