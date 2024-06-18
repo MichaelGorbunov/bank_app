@@ -9,7 +9,8 @@ import pytest
 
 # import src.utils
 from config import DATA_DIR
-from src.utils import get_transaction_amount, get_transaction_from_csv_file, get_transaction_from_file
+from src.utils import (get_transaction_amount, get_transaction_from_csv_file, get_transaction_from_file,
+                       get_transaction_from_xlsx_file)
 
 # import pytest
 # import requests
@@ -140,6 +141,13 @@ def test_get_transaction_from_csv_file_no_file():
     # assert get_transaction_from_csv_file(os.path.join(DATA_DIR, "transactions1.csv")) == []
     with pytest.raises(FileNotFoundError) as excinfo:
         get_transaction_from_csv_file(os.path.join(DATA_DIR, "transactions1.csv"))
+    assert str(excinfo.type.__name__) == "FileNotFoundError"
+
+
+def test_get_transaction_from_xlsx_file_no_file():
+    """файла нет"""
+    with pytest.raises(FileNotFoundError) as excinfo:
+        get_transaction_from_xlsx_file(os.path.join(DATA_DIR, "transactions1.xlsx"))
     assert str(excinfo.type.__name__) == "FileNotFoundError"
 
 

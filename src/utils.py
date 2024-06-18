@@ -11,6 +11,8 @@ import logging
 import os
 from typing import Any, Dict
 
+import pandas as pd
+
 from config import DATA_DIR, LOGS_DIR
 from src.external_api import currency_conversion
 
@@ -111,5 +113,32 @@ def get_transaction_from_csv_file(path: str) -> list[Dict] | Any:
         return blank_list
 
 
+def get_transaction_from_xlsx_file(path: str) -> list[Dict] | Any:
+    """функция извлекает транзакции из файла xlsx"""
+    blank_list: list = []
+    try:
+        df = pd.read_excel(path)
+        result = df.apply(
+            lambda row: {
+                "id": row["id"],
+                "state": row["state"],
+                "date": row["date"],
+                "operationAmount": {
+                    "amount": row["amount"],
+                    "currency": {"name": row["currency_name"], "code": row["currency_code"]},
+                },
+                "description": row["description"],
+                "from": row["from"],
+                "to": row["to"],
+            },
+            axis=1,
+        ).tolist()
+        return result
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File {path} not found")
+        return blank_list
+
+
 if __name__ == "__main__":
     print(get_transaction_from_csv_file(os.path.join(DATA_DIR, "test.csv")))
+    print(get_transaction_from_xlsx_file(os.path.join(DATA_DIR, "transactions_excel.xlsx")))
