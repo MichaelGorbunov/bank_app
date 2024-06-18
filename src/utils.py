@@ -13,7 +13,8 @@ from typing import Any, Dict
 
 import pandas as pd
 
-from config import DATA_DIR, LOGS_DIR
+from config import LOGS_DIR
+# from config import DATA_DIR, LOGS_DIR
 from src.external_api import currency_conversion
 
 logger = logging.getLogger("utils")
@@ -90,7 +91,7 @@ def get_transaction_from_csv_file(path: str) -> list[Dict] | Any:
             for row in reader:
                 # print(row)
                 row_dict = {
-                    "id": row[header.index("id")],
+                    "id": int(row[header.index("id")]),
                     "state": row[header.index("state")],
                     "date": row[header.index("date")],
                     "operationAmount": {
@@ -139,6 +140,6 @@ def get_transaction_from_xlsx_file(path: str) -> list[Dict] | Any:
         return blank_list
 
 
-if __name__ == "__main__":
-    print(get_transaction_from_csv_file(os.path.join(DATA_DIR, "test.csv")))
-    print(get_transaction_from_xlsx_file(os.path.join(DATA_DIR, "transactions_excel.xlsx")))
+# if __name__ == "__main__":
+#     print(get_transaction_from_csv_file(os.path.join(DATA_DIR, "test.csv")))
+#     print(get_transaction_from_xlsx_file(os.path.join(DATA_DIR, "test.xlsx")))
