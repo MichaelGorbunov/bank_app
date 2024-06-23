@@ -1,8 +1,8 @@
 def filter_operations(operation: list[dict], in_state: str = "EXECUTED") -> list[dict] | None:
     """Функция принимает список словарей с деталями операций и возвращает
-    отсортированные по одному из состояний ["EXECUTED", "CANCELED"].
+    отсортированные по одному из состояний ["CANCELED", "PENDING", "EXECUTED"].
     Сортировкой по умолчанию является "EXECUTED" """
-    if in_state not in ["EXECUTED", "CANCELED"]:
+    if in_state not in ["CANCELED", "PENDING", "EXECUTED"]:
         return None
     sort_list = []
     for item in operation:
