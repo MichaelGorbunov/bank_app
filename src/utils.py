@@ -1,8 +1,6 @@
-# Реализуйте функцию, которая принимает на вход путь до JSON-файла
-# и возвращает список словарей с данными о финансовых транзакциях.
-# Если файл пустой, содержит не список или не найден, функция возвращает пустой список.
 
-import csv
+
+# import csv
 # current_dir = os.path.dirname(os.path.abspath(__file__))
 # json_file_path = os.path.join(current_dir, "../data", "operations.json")
 # list_transactions = data_transactions(json_file_path)
@@ -13,8 +11,8 @@ from typing import Any, Dict
 
 import pandas as pd
 
-from config import LOGS_DIR
-# from config import DATA_DIR, LOGS_DIR
+# from config import LOGS_DIR
+from config import DATA_DIR, LOGS_DIR
 from src.external_api import currency_conversion
 
 logger = logging.getLogger("utils")
@@ -80,35 +78,35 @@ def get_transaction_amount(transaction: Dict) -> float:
     return 0.0
 
 
+#
+
+
 def get_transaction_from_csv_file(path: str) -> list[Dict] | Any:
     """функция принимает путь до csv файла и возвращает список словарей"""
     blank_list: list = []
+    transact_list = []
     try:
-        with open(path, "r", encoding="UTF-8") as file:
-            reader = csv.reader(file, delimiter=";")
-            header = next(reader)
-            result = []
-            for row in reader:
-                # print(row)
-                row_dict = {
-                    "id": int(row[header.index("id")]),
-                    "state": row[header.index("state")],
-                    "date": row[header.index("date")],
+        df = pd.read_csv(path, delimiter=";", encoding="UTF-8")
+        df_list = df.to_dict("records")
+        for transaction in df_list:
+            transact_list.append(
+                {
+                    "id": transaction.get("id"),
+                    "state": transaction.get("state"),
+                    "date": transaction.get("date"),
                     "operationAmount": {
-                        "amount": row[header.index("amount")],
+                        "amount": transaction.get("amount"),
                         "currency": {
-                            "name": row[header.index("currency_name")],
-                            "code": row[header.index("currency_code")],
+                            "name": transaction.get("currency_name"),
+                            "code": transaction.get("currency_code"),
                         },
                     },
-                    "description": row[header.index("description")],
-                    "from": row[header.index("from")],
-                    "to": row[header.index("to")],
+                    "description": transaction.get("description"),
+                    "from": transaction.get("from"),
+                    "to": transaction.get("to"),
                 }
-                result.append(row_dict)
-            file.close()
-
-            return result
+            )
+        return transact_list
     except FileNotFoundError:
         raise FileNotFoundError(f"File {path} not found")
         return blank_list
@@ -117,24 +115,29 @@ def get_transaction_from_csv_file(path: str) -> list[Dict] | Any:
 def get_transaction_from_xlsx_file(path: str) -> list[Dict] | Any:
     """функция извлекает транзакции из файла xlsx"""
     blank_list: list = []
+    transact_list = []
     try:
         df = pd.read_excel(path)
-        result = df.apply(
-            lambda row: {
-                "id": row["id"],
-                "state": row["state"],
-                "date": row["date"],
-                "operationAmount": {
-                    "amount": row["amount"],
-                    "currency": {"name": row["currency_name"], "code": row["currency_code"]},
-                },
-                "description": row["description"],
-                "from": row["from"],
-                "to": row["to"],
-            },
-            axis=1,
-        ).tolist()
-        return result
+        df_list = df.to_dict("records")
+        for transaction in df_list:
+            transact_list.append(
+                {
+                    "id": transaction.get("id"),
+                    "state": transaction.get("state"),
+                    "date": transaction.get("date"),
+                    "operationAmount": {
+                        "amount": transaction.get("amount"),
+                        "currency": {
+                            "name": transaction.get("currency_name"),
+                            "code": transaction.get("currency_code"),
+                        },
+                    },
+                    "description": transaction.get("description"),
+                    "from": transaction.get("from"),
+                    "to": transaction.get("to"),
+                }
+            )
+        return transact_list
     except FileNotFoundError:
         raise FileNotFoundError(f"File {path} not found")
         return blank_list
@@ -142,4 +145,65 @@ def get_transaction_from_xlsx_file(path: str) -> list[Dict] | Any:
 
 # if __name__ == "__main__":
 #     print(get_transaction_from_csv_file(os.path.join(DATA_DIR, "test.csv")))
-#     print(get_transaction_from_xlsx_file(os.path.join(DATA_DIR, "test.xlsx")))
+print(get_transaction_from_xlsx_file(os.path.join(DATA_DIR, "test.xlsx")))
+print(get_transaction_from_csv_file(os.path.join(DATA_DIR, "test.csv")))
+print(get_transaction_from_xlsx_file(os.path.join(DATA_DIR, "transactions_excel.xlsx")))
+print(get_transaction_from_csv_file(os.path.join(DATA_DIR, "transactions.csv")))
+
+# def get_transaction_from_xlsx_file(path: str) -> list[Dict] | Any:
+#     """функция извлекает транзакции из файла xlsx"""
+#     blank_list: list = []
+#     try:
+#         df = pd.read_excel(path)
+#         result = df.apply(
+#             lambda row: {
+#                 "id": row["id"],
+#                 "state": row["state"],
+#                 "date": row["date"],
+#                 "operationAmount": {
+#                     "amount": row["amount"],
+#                     "currency": {"name": row["currency_name"], "code": row["currency_code"]},
+#                 },
+#                 "description": row["description"],
+#                 "from": row["from"],
+#                 "to": row["to"],
+#             },
+#             axis=1,
+#         ).tolist()
+#         return result
+#     except FileNotFoundError:
+#         raise FileNotFoundError(f"File {path} not found")
+#         return blank_list
+
+# def get_transaction_from_csv_file(path: str) -> list[Dict] | Any:
+#     """функция принимает путь до csv файла и возвращает список словарей"""
+#     blank_list: list = []
+#     try:
+#         with open(path, "r", encoding="UTF-8") as file:
+#             reader = csv.reader(file, delimiter=";")
+#             header = next(reader)
+#             result = []
+#             for row in reader:
+#                 # print(row)
+#                 row_dict = {
+#                     "id": int(row[header.index("id")]),
+#                     "state": row[header.index("state")],
+#                     "date": row[header.index("date")],
+#                     "operationAmount": {
+#                         "amount": row[header.index("amount")],
+#                         "currency": {
+#                             "name": row[header.index("currency_name")],
+#                             "code": row[header.index("currency_code")],
+#                         },
+#                     },
+#                     "description": row[header.index("description")],
+#                     "from": row[header.index("from")],
+#                     "to": row[header.index("to")],
+#                 }
+#                 result.append(row_dict)
+#             file.close()
+#
+#             return result
+#     except FileNotFoundError:
+#         raise FileNotFoundError(f"File {path} not found")
+#         return blank_list

@@ -15,3 +15,8 @@ print(get_transaction_amount({}))
 print(get_masked_nums("41421565395219882431"))
 print(get_masked_nums("6831982476737658"))
 print(get_masked_nums("6831erwerwrw37658"))
+
+
+from src.utils import get_transaction_from_file
+
+print(get_transaction_from_file("data\\operations.json"))
