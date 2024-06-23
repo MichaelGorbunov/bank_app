@@ -53,7 +53,7 @@ def main() -> None:
         if sort_date == "да":
             while True:
                 sorting_order = input(
-                """Отсортировать по возрастанию или по убыванию? по возрастанию/по убыванию\n"""
+                    """Отсортировать по возрастанию или по убыванию? по возрастанию/по убыванию\n"""
                 ).lower()
                 if sorting_order == "по возрастанию":
                     filters.append(("date", False))
@@ -91,7 +91,7 @@ def main() -> None:
             print("Некорректный выбор. Попробуйте еще раз.")
             continue
 
-    print(filters)
+    # print(filters)
 
     transactions = list_transactions
     for filter_type, filter_value in filters:
@@ -115,7 +115,6 @@ def main() -> None:
             from_ = description
         else:
             from_ = get_masked_nums2(transaction.get("from"))
-
 
         # from_ = get_masked_nums2(transaction.get("from"))
         to_ = get_masked_nums2(transaction.get("to"))
