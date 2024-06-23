@@ -9,8 +9,8 @@ from typing import Any, Dict
 
 import pandas as pd
 
-# from config import LOGS_DIR
-from config import DATA_DIR, LOGS_DIR
+from config import LOGS_DIR
+# from config import DATA_DIR, LOGS_DIR
 from src.external_api import currency_conversion
 
 logger = logging.getLogger("utils")

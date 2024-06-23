@@ -1,13 +1,16 @@
 import os
 
 from config import DATA_DIR
-from src.masks import get_masked_nums
+from src.masks import get_masked_nums2
 from src.processing import filter_operations, sorted_operation
+from src.sort import list_transactions_sort_search
 from src.utils import get_transaction_from_csv_file, get_transaction_from_file, get_transaction_from_xlsx_file
 from src.widget import date_from_string
 
+# import re
 
-def main():
+
+def main() -> None:
     while True:
         print(
             """Привет! Добро пожаловать в программу работы с банковскими транзакциями.
@@ -48,21 +51,26 @@ def main():
     while True:
         sort_date = input("Отсортировать операции по дате?  Да/Нет\n").lower()
         if sort_date == "да":
-            sorting_order = input(
-                """Отсортировать по возрастанию или по убыванию? по возрастанию/по убыванию\n""").lower()
-            if sorting_order == "по возрастанию":
-                filters.append(("date", False))
-                break
-            else:
-                filters.append(("date", True))
-                break
+            while True:
+                sorting_order = input(
+                """Отсортировать по возрастанию или по убыванию? по возрастанию/по убыванию\n"""
+                ).lower()
+                if sorting_order == "по возрастанию":
+                    filters.append(("date", False))
+                    break
+                elif sorting_order == "по убыванию":
+                    filters.append(("date", True))
+                    break
+                else:
+                    print("Некорректный выбор. Попробуйте еще раз.")
+                    continue
         elif sort_date == "нет":
             break
         else:
             print("Некорректный выбор. Попробуйте еще раз.")
             continue
     while True:
-        sort_code = str(input("Выводить только рублевые тразакции? Да/Нет\n")).lower()
+        sort_code = str(input("Выводить только рублевые транзакции? Да/Нет\n")).lower()
         if sort_code == "да":
             filters.append(("currency", "RUB"))
             break
@@ -83,6 +91,8 @@ def main():
             print("Некорректный выбор. Попробуйте еще раз.")
             continue
 
+    print(filters)
+
     transactions = list_transactions
     for filter_type, filter_value in filters:
         if filter_type == "status":
@@ -90,15 +100,36 @@ def main():
         elif filter_type == "date":
             transactions = sorted_operation(transactions, filter_value)
         elif filter_type == "currency":
-            transactions = [
-                txn for txn in transactions if txn.get("operationAmount")["currency"]["code"] == filter_value
-            ]
-        # elif filter_type == "description":
-        #     transactions = list_transactions_sort_search(transactions, filter_value)
+            transactions = [txn for txn in transactions if txn["operationAmount"]["currency"]["code"] == filter_value]
+        elif filter_type == "description":
+            transactions = list_transactions_sort_search(transactions, filter_value)
     print("Распечатываю итоговый список транзакций...")
-    print(transactions)
+    if not transactions:
+        print("Не найдено ни одной транзакции, подходящей под ваши условия фильтрации")
+    else:
+        print(f"Всего банковских операций в выборке: {len(transactions)}")
 
-    print(f"Всего банковских операций в выборке: {len(transactions)}")
+    for transaction in transactions:
+        description = transaction.get("description")
+        if description == "Открытие вклада":
+            from_ = description
+        else:
+            from_ = get_masked_nums2(transaction.get("from"))
+
+
+        # from_ = get_masked_nums2(transaction.get("from"))
+        to_ = get_masked_nums2(transaction.get("to"))
+        date = date_from_string(transaction.get("date"))
+
+        amount = transaction["operationAmount"]["amount"]
+        currency = transaction["operationAmount"]["currency"]["name"]
+
+        if description == "Открытие вклада":
+            print(f"{date} {description}\nСчет {to_}\nСумма: {amount} {currency}\n")
+            # print(f"{date} {description}\nСчет {to_} \nСумма: {amount} {currency}\n")
+        else:
+            print(f"{date} {description}\n{from_} -> {to_}\nСумма: {amount} {currency}\n")
+            # print(f"{date} {description}\n -> {to_}\n Сумма: {amount} {currency}\n")
 
 
 if __name__ == "__main__":
