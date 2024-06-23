@@ -47,8 +47,9 @@ def get_masked_nums2(nums: str) -> str:
     """Функция принимает номер карты или счета и возвращает их замаскированными.
     При ошибочно введенных данных возвращает сообщение об ошибке"""
 
-    matches = re.search(r"(\d{16})|(\d{20})", nums)
-    nums = matches.group()
+    matches = re.search(r"\b(\d{16})|(\d{20})", nums)
+    if matches is not None:
+        nums = matches.group()
 
     if len(nums) == 16 and nums.isdigit():
         logger.info("введен номер карты")
