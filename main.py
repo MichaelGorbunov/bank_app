@@ -64,6 +64,7 @@ def main() -> None:
                 else:
                     print("Некорректный выбор. Попробуйте еще раз.")
                     continue
+            break
         elif sort_date == "нет":
             break
         else:
