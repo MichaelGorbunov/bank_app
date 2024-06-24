@@ -36,14 +36,16 @@ def main() -> None:
             print("Некорректный выбор. Попробуйте еще раз.")
             continue
 
-    filters = []
+    # filters = []
+    filters: dict[str, str | bool] = {}
     while True:
         status = input(
             "Введите статус, по которому необходимо выполнить фильтрацию. "
             "Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING:\n"
         ).upper()
         if status in ["CANCELED", "PENDING", "EXECUTED"]:
-            filters.append(("status", status))
+            # filters.append(("status", status))
+            filters["status"] = status
             break
         else:
             print("Некорректный выбор. Попробуйте еще раз.")
@@ -56,10 +58,12 @@ def main() -> None:
                     """Отсортировать по возрастанию или по убыванию? по возрастанию/по убыванию\n"""
                 ).lower()
                 if sorting_order == "по возрастанию":
-                    filters.append(("date", False))
+                    # filters.append(("date", False))
+                    filters["date"] = False
                     break
                 elif sorting_order == "по убыванию":
-                    filters.append(("date", True))
+                    # filters.append(("date", True))
+                    filters["date"] = True
                     break
                 else:
                     print("Некорректный выбор. Попробуйте еще раз.")
@@ -73,7 +77,8 @@ def main() -> None:
     while True:
         sort_code = str(input("Выводить только рублевые транзакции? Да/Нет\n")).lower()
         if sort_code == "да":
-            filters.append(("currency", "RUB"))
+            # filters.append(("currency", "RUB"))
+            filters["currency"] = "RUB"
             break
         elif sort_code == "нет":
             break
@@ -84,7 +89,8 @@ def main() -> None:
         user_input = input("Отфильтровать список транзакций по определенному слову в описании? Да/Нет:\n").lower()
         if user_input == "да":
             search = input("Видите слово для поиска: ")
-            filters.append(("description", search))
+            # filters.append(("description", search))
+            filters["description"] = search
             break
         elif user_input == "нет":
             break
@@ -95,7 +101,7 @@ def main() -> None:
     # print(filters)
 
     transactions = list_transactions
-    for filter_type, filter_value in filters:
+    for filter_type, filter_value in filters.items():
         if filter_type == "status":
             transactions = filter_operations(transactions, filter_value)
         elif filter_type == "date":
@@ -104,7 +110,6 @@ def main() -> None:
             transactions = [txn for txn in transactions if txn["operationAmount"]["currency"]["code"] == filter_value]
         elif filter_type == "description":
             transactions = list_transactions_sort_search(transactions, filter_value)
-
 
     if not transactions:
         print("Не найдено ни одной транзакции, подходящей под ваши условия фильтрации")
