@@ -1,11 +1,11 @@
 import os
 
 from config import DATA_DIR
-from src.masks import get_masked_nums2
+# from src.masks import get_masked_nums2
 from src.processing import filter_operations, sorted_operation
 from src.sort import list_transactions_sort_search
 from src.utils import get_transaction_from_csv_file, get_transaction_from_file, get_transaction_from_xlsx_file
-from src.widget import date_from_string
+from src.widget import date_from_string, mask_bank_data
 
 # import re
 
@@ -114,10 +114,10 @@ def main() -> None:
         if description == "Открытие вклада":
             from_ = description
         else:
-            from_ = get_masked_nums2(transaction.get("from"))
+            from_ = mask_bank_data(transaction.get("from"))
 
         # from_ = get_masked_nums2(transaction.get("from"))
-        to_ = get_masked_nums2(transaction.get("to"))
+        to_ = mask_bank_data(transaction.get("to"))
         date = date_from_string(transaction.get("date"))
 
         amount = transaction["operationAmount"]["amount"]
