@@ -1,5 +1,3 @@
-
-
 # import csv
 # current_dir = os.path.dirname(os.path.abspath(__file__))
 # json_file_path = os.path.join(current_dir, "../data", "operations.json")
@@ -11,8 +9,8 @@ from typing import Any, Dict
 
 import pandas as pd
 
-# from config import LOGS_DIR
-from config import DATA_DIR, LOGS_DIR
+from config import LOGS_DIR
+# from config import DATA_DIR, LOGS_DIR
 from src.external_api import currency_conversion
 
 logger = logging.getLogger("utils")
@@ -145,10 +143,10 @@ def get_transaction_from_xlsx_file(path: str) -> list[Dict] | Any:
 
 # if __name__ == "__main__":
 #     print(get_transaction_from_csv_file(os.path.join(DATA_DIR, "test.csv")))
-print(get_transaction_from_xlsx_file(os.path.join(DATA_DIR, "test.xlsx")))
-print(get_transaction_from_csv_file(os.path.join(DATA_DIR, "test.csv")))
-print(get_transaction_from_xlsx_file(os.path.join(DATA_DIR, "transactions_excel.xlsx")))
-print(get_transaction_from_csv_file(os.path.join(DATA_DIR, "transactions.csv")))
+# print(get_transaction_from_xlsx_file(os.path.join(DATA_DIR, "test.xlsx")))
+# print(get_transaction_from_csv_file(os.path.join(DATA_DIR, "test.csv")))
+# print(get_transaction_from_xlsx_file(os.path.join(DATA_DIR, "transactions_excel.xlsx")))
+# print(get_transaction_from_csv_file(os.path.join(DATA_DIR, "transactions.csv")))
 
 # def get_transaction_from_xlsx_file(path: str) -> list[Dict] | Any:
 #     """функция извлекает транзакции из файла xlsx"""
