@@ -104,12 +104,15 @@ def main() -> None:
             transactions = [txn for txn in transactions if txn["operationAmount"]["currency"]["code"] == filter_value]
         elif filter_type == "description":
             transactions = list_transactions_sort_search(transactions, filter_value)
-    print("Распечатываю итоговый список транзакций...")
+
+
     if not transactions:
         print("Не найдено ни одной транзакции, подходящей под ваши условия фильтрации")
-    else:
-        print(f"Всего банковских операций в выборке: {len(transactions)}")
-
+        return
+    # else:
+    #     print(f"Всего банковских операций в выборке: {len(transactions)}")
+    print("Распечатываю итоговый список транзакций...")
+    print(f"Всего банковских операций в выборке: {len(transactions)}")
     for transaction in transactions:
         description = transaction.get("description")
         if description == "Открытие вклада":
